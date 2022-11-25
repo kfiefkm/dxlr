@@ -1,0 +1,111 @@
+local Threads = {}
+local AutoSaveBool = false
+local AutoClickBool = false
+local AutoPetBool = false
+local AutoCollectMoneyBool = false
+
+local capybara = game:GetService("Workspace"):WaitForChild("Game"):WaitForChild("InGamePets"):FindFirstChild("Capybara")
+
+function savegame()
+	if not AutoSaveBool then return end
+	task.wait(1)
+	game:GetService("ReplicatedStorage").Events.SaveGame:FireServer()
+end
+
+function clickcapy()
+	if not AutoClickBool then return end
+	task.wait(0.3)
+	fireclickdetector(capybara.Torso.ClickDetector)
+end
+
+function petcapy()
+	if not AutoPetBool then return end
+	local hapiness = (capybara.Torso.Tag.Holder.Hapiness.Text):gsub("happiness: ","")
+	hapiness = tonumber(hapiness)
+	if hapiness < 70 then
+		capybara.Torso.CFrame = game:GetService("Players").LocalPlayer.Character:FindFirstChild("Torso").CFrame
+		local capytor = capybara.Torso
+		local hrp = game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+		local oldcf = hrp.CFrame
+		hrp.CFrame = capytor.CFrame
+		fireproximityprompt(capytor.ProximityPrompt)
+		task.wait(1)
+		hrp.CFrame = oldcf
+	end
+end
+
+function collectmoney()
+	if not AutoCollectMoneyBool then return end
+	for i,v in pairs(game:GetService("Workspace").Game.TempAssets.Coins:GetChildren()) do
+		if v.Name == "Coin" then
+			v.CFrame = game:GetService("Players").LocalPlayer.Character:FindFirstChild("Head").CFrame
+		elseif v.Name == "MoneyBag" then
+			v:FindFirstChild("Meshes/BAGGY_Circle").CFrame = game:GetService("Players").LocalPlayer.Character:FindFirstChild("Head").CFrame
+		end
+	end
+end
+
+function SpawnToggleLoop(Value,Callback)
+	local Thread = task.spawn(function()
+		while task.wait(0.01) do
+			Callback()
+		end
+	end)
+	table.insert(Threads,Thread)
+end
+
+SpawnToggleLoop(AutoSaveBool,savegame)
+SpawnToggleLoop(AutoPetBool,clickcapy)
+SpawnToggleLoop(AutoPetBool,petcapy)
+SpawnToggleLoop(AutoCollectMoneyBool,collectmoney)
+
+local antiafkcon
+antiafkcon = game:GetService("Players").LocalPlayer.Idled:Connect(function()
+	game:GetService("VirtualUser"):Button2Down(Vector2.new(0,0),game:GetService("Workspace").CurrentCamera.CFrame)
+	task.wait(1)
+	game:GetService("VirtualUser"):Button2Up(Vector2.new(0,0),game:GetService("Workspace").CurrentCamera.CFrame)
+end)
+
+local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/GreenDeno/Venyx-UI-Library/main/source.lua"))()
+local venyx = library.new("DXLR", 5013109572)
+
+local themes = {
+Background = Color3.fromRGB(24, 24, 24),
+Glow = Color3.fromRGB(0, 0, 0),
+Accent = Color3.fromRGB(10, 10, 10),
+LightContrast = Color3.fromRGB(20, 20, 20),
+DarkContrast = Color3.fromRGB(14, 14, 14),  
+TextColor = Color3.fromRGB(255, 255, 255)
+}
+
+local page = venyx:addPage("Main", 5012544693)
+local section1 = page:addSection("raise a capybara")
+
+
+section1:addToggle("Auto Save", nil, function(value)
+		AutoSaveBool = value
+	end)
+section1:addToggle("Auto Click Capy", nil, function(value)
+		AutoClickBool = value
+    end)
+section1:addToggle("Auto Pet", nil, function(value)
+		AutoPetBool = value
+    end)
+section1:addToggle("Auto Collect Money", nil, function(value)
+		AutoCollectMoneyBool = value
+end)
+
+section1:addButton("Open Computer", function()
+		fireproximityprompt(game:GetService("Workspace").Game.Interaction.Computer.ProximityPrompt)
+end)
+
+section1:addButton("TP to arrow", function()
+
+		local lplr = game:GetService("Players").LocalPlayer
+		if game:GetService("Workspace"):FindFirstChild(lplr.Name.."'s Arrow") ~= nil then
+			local arrow = game:GetService("Workspace"):FindFirstChild(lplr.Name.."'s Arrow").MainPart
+			lplr.Character:FindFirstChild("HumanoidRootPart").CFrame = (arrow.CFrame + Vector3.new(0,3,0))
+		else
+            venyx:Notify("Important", "No arrow is existing")
+		end
+	end)
