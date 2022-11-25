@@ -1,0 +1,82 @@
+local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/GreenDeno/Venyx-UI-Library/main/source.lua"))()
+local venyx = library.new("DXLR", 5013109572)
+
+local themes = {
+Background = Color3.fromRGB(24, 24, 24),
+Glow = Color3.fromRGB(0, 0, 0),
+Accent = Color3.fromRGB(10, 10, 10),
+LightContrast = Color3.fromRGB(20, 20, 20),
+DarkContrast = Color3.fromRGB(14, 14, 14),  
+TextColor = Color3.fromRGB(255, 255, 255)
+}
+
+local page = venyx:addPage("Main", 5012544693)
+local section1 = page:addSection("Race Clicker")
+
+local heartbeat 
+section1:addToggle("Auto Clicker", nil, function(value)
+if value == true then   
+           heartbeat = game:GetService("RunService").Heartbeat:Connect(function()
+game:GetService("ReplicatedStorage").Packages.Knit.Services.ClickService.RF.Click:InvokeServer()
+   task.wait(0.1)
+    end)
+else
+    heartbeat:Disconnect() 
+end
+end)
+
+section1:addSlider("Speed", 16, 16, 100000, function(value)
+game:GetService("Players").LocalPlayer.Character.Humanoid.WalkSpeed = value
+end)
+
+section1:addButton("Equip Best Pets", function()
+    game:GetService("ReplicatedStorage").Packages.Knit.Services.PetsService.RF.EquipBest:InvokeServer()
+end)
+
+section1:addDropdown("Hatch egg", {"5 wins", "25 wins", "175 wins", "1k wins", "10k wins", "75k wins","250k wins"}, function(text)
+if text == "5 wins" then
+local ohString1 = "Starter01"
+local ohString2 = "1"
+local ohTable3 = {}
+
+game:GetService("ReplicatedStorage").Packages.Knit.Services.EggService.RF.Open:InvokeServer(ohString1, ohString2, ohTable3)
+elseif text == "25 wins" then
+local ohString1 = "Starter02"
+local ohString2 = "1"
+local ohTable3 = {}
+
+game:GetService("ReplicatedStorage").Packages.Knit.Services.EggService.RF.Open:InvokeServer(ohString1, ohString2, ohTable3)
+elseif text == "175 wins" then
+    local ohString1 = "Starter03"
+local ohString2 = "1"
+local ohTable3 = {}
+
+game:GetService("ReplicatedStorage").Packages.Knit.Services.EggService.RF.Open:InvokeServer(ohString1, ohString2, ohTable3)
+elseif text == "1k wins" then
+    local ohString1 = "Starter04"
+local ohString2 = "1"
+local ohTable3 = {}
+
+game:GetService("ReplicatedStorage").Packages.Knit.Services.EggService.RF.Open:InvokeServer(ohString1, ohString2, ohTable3)
+elseif text == "10k wins" then
+    local ohString1 = "Starter05"
+    local ohString2 = "1"
+    local ohTable3 = {}
+    
+    game:GetService("ReplicatedStorage").Packages.Knit.Services.EggService.RF.Open:InvokeServer(ohString1, ohString2, ohTable3)
+elseif text == "75k wins" then
+    local ohString1 = "Starter06"
+    local ohString2 = "1"
+    local ohTable3 = {}
+    
+    game:GetService("ReplicatedStorage").Packages.Knit.Services.EggService.RF.Open:InvokeServer(ohString1, ohString2, ohTable3)
+elseif text == "250k wins" then
+    local ohString1 = "Starter07"
+    local ohString2 = "1"
+    local ohTable3 = {}
+    
+    game:GetService("ReplicatedStorage").Packages.Knit.Services.EggService.RF.Open:InvokeServer(ohString1, ohString2, ohTable3)
+end
+end)
+
+venyx:SelectPage(venyx.pages[1], true)
