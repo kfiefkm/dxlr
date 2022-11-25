@@ -45,4 +45,17 @@ else
     heartbeat2:Disconnect() 
 end
 end)
+
+
+local heartbeat3
+section1:addToggle("Auto Buy Speed", nil, function(value)
+if value == true then        
+        heartbeat3 = game:GetService("RunService").Heartbeat:Connect(function()    
+            game:GetService("ReplicatedStorage").Packages._Index["sleitnick_knit@1.4.2"].knit.Services.BuyService.RF.BuySM:InvokeServer()
+            task.wait(0.05)
+    end)
+else
+    heartbeat3:Disconnect() 
+end
+end)
 venyx:SelectPage(venyx.pages[1], true)
