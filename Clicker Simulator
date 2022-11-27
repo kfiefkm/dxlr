@@ -17,6 +17,7 @@ local heartbeat
 section1:addToggle("Auto Clicker", nil, function(value)
 if value == true then  
            heartbeat = game:GetService("RunService").Heartbeat:Connect(function()
+           wait()
             getsenv(game:GetService("Players").LocalPlayer.PlayerGui.mainUI.HUDHandler).activateClick()
         end)
 else
