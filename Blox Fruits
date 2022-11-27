@@ -1,0 +1,45 @@
+local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/GreenDeno/Venyx-UI-Library/main/source.lua"))()
+local venyx = library.new("DXLR", 5013109572)
+
+local themes = {
+Background = Color3.fromRGB(24, 24, 24),
+Glow = Color3.fromRGB(0, 0, 0),
+Accent = Color3.fromRGB(10, 10, 10),
+LightContrast = Color3.fromRGB(20, 20, 20),
+DarkContrast = Color3.fromRGB(14, 14, 14),  
+TextColor = Color3.fromRGB(255, 255, 255)
+}
+
+local page = venyx:addPage("Main", 5012544693)
+local section1 = page:addSection("Blox Fruits")
+local lplr = game:GetService("Players").LocalPlayer
+local lchar = lplr.Character
+
+local heartbeat 
+section1:addToggle("Auto Kill Farm", nil, function(value)
+if value == true then  
+    venyx:Notify("Important", "Equip your wepon and make sure your on a quest")
+    heartbeat = game:GetService("RunService").Heartbeat:Connect(function()
+        if lplr.Character.HumanoidRootPart then
+            local vu = game:GetService("VirtualUser")
+            vu:ClickButton1(Vector2.new(-999,-999), game.Workspace.CurrentCamera.CFrame)
+            for i,v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
+                local ohString1 = "Z"
+local ohCFrame2 = v.HumanoidRootPart.CFrame
+lplr.Character.Humanoid['']:InvokeServer(ohString1, ohCFrame2)
+                game:GetService("TweenService"):Create(lplr.Character.HumanoidRootPart, TweenInfo.new(0.1, Enum.EasingStyle.Linear), {CFrame = v.HumanoidRootPart.CFrame + Vector3.new(0,5,0)}):Play()
+                wait(0.2)
+                
+
+lplr.Character.HumanoidRootPart.CFrame =    lplr.Character.HumanoidRootPart.CFrame + Vector3.new(0,5,0)
+                repeat wait() until not v.Humanoid
+            end
+        end
+        end)
+else
+    heartbeat:Disconnect() 
+end
+end)
+
+venyx:SelectPage(venyx.pages[1], true)
+
