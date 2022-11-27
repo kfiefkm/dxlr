@@ -1,0 +1,110 @@
+local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/GreenDeno/Venyx-UI-Library/main/source.lua"))()
+local venyx = library.new("DXLR", 5013109572)
+
+local themes = {
+Background = Color3.fromRGB(24, 24, 24),
+Glow = Color3.fromRGB(0, 0, 0),
+Accent = Color3.fromRGB(10, 10, 10),
+LightContrast = Color3.fromRGB(20, 20, 20),
+DarkContrast = Color3.fromRGB(14, 14, 14),  
+TextColor = Color3.fromRGB(255, 255, 255)
+}
+
+local page = venyx:addPage("Main", 5012544693)
+local section1 = page:addSection("Tapping Simulator")
+
+local heartbeat 
+section1:addToggle("Auto Clicker", nil, function(value)
+if value == true then  
+           heartbeat = game:GetService("RunService").Heartbeat:Connect(function()
+
+game:GetService("ReplicatedStorage").Events.Tap:FireServer()
+        end)
+else
+    heartbeat:Disconnect() 
+end
+end)
+
+
+section1:addDropdown("Hatch egg", {"starter","wood", "jungle"}, function(text)
+    if text == "starter" then
+local ohTable1 = {}
+local ohString2 = "Starter"
+local ohNumber3 = 1
+
+game:GetService("ReplicatedStorage").Events.HatchEgg:InvokeServer(ohTable1, ohString2, ohNumber3)
+    elseif text == "wood" then
+
+local ohTable1 = {}
+local ohString2 = "Wood Egg"
+local ohNumber3 = 1
+
+game:GetService("ReplicatedStorage").Events.HatchEgg:InvokeServer(ohTable1, ohString2, ohNumber3)
+    elseif text == "jungle" then
+local ohTable1 = {}
+local ohString2 = "Jungle Egg"
+local ohNumber3 = 1
+
+game:GetService("ReplicatedStorage").Events.HatchEgg:InvokeServer(ohTable1, ohString2, ohNumber3)
+    end
+    end)
+
+local heartbeat2
+section1:addToggle("Auto Rebirth", nil, function(value)
+    if value == true then  
+        heartbeat2 = game:GetService("RunService").Heartbeat:Connect(function()
+            local ohNumber1 = 20
+            game:GetService("ReplicatedStorage").Events.Rebirth:FireServer(ohNumber1)
+        end)       
+else
+        heartbeat2:Disconnect()
+        
+        end
+        end)
+
+
+
+section1:addSlider("Speed", 16, 16, 100000, function(value)
+game:GetService("Players").LocalPlayer.Character.Humanoid.WalkSpeed = value
+end)
+
+local lplr = game:GetService("Players").LocalPlayer
+local lchar = lplr.Character
+
+section1:addButton("Teleport to spawn", function()
+        lchar.HumanoidRootPart.CFrame = game:GetService("Workspace").Map.World1.PremiumShopBooth.Part.CFrame
+    end)
+
+
+
+section1:addSlider("Rebirth", 16, 1, 100000, function(value)
+    local ohNumber1 = value
+
+    game:GetService("ReplicatedStorage").Events.Rebirth:FireServer(ohNumber1)
+    end)
+    
+
+section1:addButton("1 Rebirth", function()
+local ohNumber1 = 1
+
+game:GetService("ReplicatedStorage").Events.Rebirth:FireServer(ohNumber1)
+end)
+
+local uis = game:GetService("UserInputService")
+local heartbeat3
+section1:addToggle("Inf Jump", nil, function(value)
+    if value == true then  
+        heartbeat3 = game:GetService("RunService").Heartbeat:Connect(function()
+  uis.JumpRequest:Connect(function()
+    lchar.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+  end)
+
+        end)       
+else
+        heartbeat3:Disconnect()
+        
+        end
+        end)
+
+venyx:SelectPage(venyx.pages[1], true)
+
