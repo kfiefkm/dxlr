@@ -1,0 +1,76 @@
+local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/GreenDeno/Venyx-UI-Library/main/source.lua"))()
+local venyx = library.new("DXLR", 5013109572)
+
+local themes = {
+Background = Color3.fromRGB(24, 24, 24),
+Glow = Color3.fromRGB(0, 0, 0),
+Accent = Color3.fromRGB(10, 10, 10),
+LightContrast = Color3.fromRGB(20, 20, 20),
+DarkContrast = Color3.fromRGB(14, 14, 14),  
+TextColor = Color3.fromRGB(255, 255, 255)
+}
+
+local page = venyx:addPage("Main", 5012544693)
+local section1 = page:addSection("Jump Clicker")
+
+
+
+local valueforjump
+local function boost()
+if game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.BodyVelocity and valueforjump then
+    game:GetService("Workspace").Characters["bedwars_isassngl"].HumanoidRootPart.BodyVelocity.Velocity = Vector3.new(0,valueforjump,0)
+end
+end
+
+local function rebirth()
+    game:GetService("ReplicatedStorage").Packages._Index["sleitnick_knit@1.4.7"].knit.Services.RebirthService.RF.Rebirth:InvokeServer()
+end
+
+    local function click()
+game:GetService("ReplicatedStorage").Packages._Index["sleitnick_knit@1.4.7"].knit.Services.JumpService.RE.Tap:FireServer()
+    end
+
+
+    local heartbeat1
+    section1:addToggle("Auto Click", nil, function(value)
+       if value == true then        
+    heartbeat1 = game:GetService("RunService").Heartbeat:Connect(function()
+            click()
+    end)
+        else
+            heartbeat1:Disconnect()
+    end
+    end)
+
+    local heartbeat2
+    section1:addToggle("High Jump", nil, function(value)
+        if value == true then        
+        heartbeat2 = game:GetService("RunService").Heartbeat:Connect(function()
+            boost()
+        end)
+        else
+            heartbeat2:Disconnect()
+    
+            end
+    end)
+
+
+    section1:addSlider("High Jump Power", 25, 25, 99999999, function(value)
+        valueforjump = value
+    end)
+
+    local heartbeat3
+    section1:addToggle("Auto Rebirth", nil, function(value)
+        if value == true then        
+        heartbeat3 = game:GetService("RunService").Heartbeat:Connect(function()
+            rebirth()
+        end)
+        else
+            heartbeat3:Disconnect()
+    
+            end
+    end)
+
+
+
+venyx:SelectPage(venyx.pages[1], true)
