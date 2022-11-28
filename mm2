@@ -82,32 +82,7 @@ end)
         end
 end)
 
-
-local heartbeat3
-local Knife
-local lastAttack
-section1:addToggle("NoClip", nil, function(value)
-    if value == true then 
-    heartbeat3 = game:GetService("RunService").Heartbeat:Connect(function()
-        for i,v in pairs(game:GetService("Players").LocalPlayer.Character:GetDescendants()) do
-                if v:IsA("BasePart") then
-                    v.CanCollide = false
-                end
-                end
-    end)
- else
-
-    heartbeat3:Disconnect()
-    for i,v in pairs(game:GetService("Players").LocalPlayer.Character:GetDescendants()) do
-        if v:IsA("BasePart") then
-            v.CanCollide = false
-        end
-        end
-
-        end
-end)
-
-        
+  
 section1:addButton("Reveal murder", function()
 printmurder()
 end)
