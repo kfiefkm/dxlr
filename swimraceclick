@@ -1,0 +1,151 @@
+local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/GreenDeno/Venyx-UI-Library/main/source.lua"))()
+local venyx = library.new("DXLR", 5013109572)
+
+local themes = {
+Background = Color3.fromRGB(24, 24, 24),
+Glow = Color3.fromRGB(0, 0, 0),
+Accent = Color3.fromRGB(10, 10, 10),
+LightContrast = Color3.fromRGB(20, 20, 20),
+DarkContrast = Color3.fromRGB(14, 14, 14),  
+TextColor = Color3.fromRGB(255, 255, 255)
+}
+
+local page = venyx:addPage("Main", 5012544693)
+local section1 = page:addSection("Swim Race Clicker")
+local players =  game:GetService("Players")
+local RunService = game:GetService("RunService")
+local lplr = players.LocalPlayer
+local lchar = lplr.Character
+local lhrp = lchar:FindFirstChild("HumanoidRootPart")
+
+local function teleporto(args)
+if lhrp then
+lhrp.CFrame = args.CFrame
+end
+end
+
+
+local function tweento(speed, pos)
+    if lhrp then
+        game:GetService("TweenService"):Create(lhrp, TweenInfo.new(speed, Enum.EasingStyle.Linear), {CFrame = pos}):Play()
+    end
+    end
+    
+local function autofarm()
+    tweento(0.3, CFrame.new(616299.75, 11.7546759, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1))
+end
+
+local valueforspeed
+local function speed()
+if game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart") and valueforspeed then
+    game:GetService("Players").LocalPlayer.Character:FindFirstChild("Humanoid").WalkSpeed = valueforspeed
+game:GetService("ReplicatedStorage").RemoteEvents.plrWalk:FireServer(true)
+end
+end
+
+local function rebirth()
+game:GetService("ReplicatedStorage").ShenoyEvents.Prestige:FireServer()
+end
+
+    local function click()
+game:GetService("ReplicatedStorage").Packages.Knit.Services.ClickingService.RF.Click:InvokeServer()
+    end
+    local eggs = {}
+function getgeggnames()
+
+    for i,v in pairs(game:GetService("Workspace").Eggs:GetChildren()) do
+            table.insert(eggs,v)
+        end
+    return eggs
+end
+
+local valueforautohatch
+local function hatchegg()
+local ohString1 = valueforautohatch
+local ohString2 = "Single"
+
+game:GetService("ReplicatedStorage").RemoteEvents.EggOpened:InvokeServer(ohString1, ohString2)
+end
+
+    local heartbeat1
+    section1:addToggle("Speed Toggle", nil, function(value)
+       if value == true then        
+    heartbeat1 = game:GetService("RunService").Heartbeat:Connect(function()
+            speed()
+    end)
+        else
+            heartbeat1:Disconnect()
+    end
+    end)
+
+
+    section1:addSlider("Speed slider", 25, 25, 99999999999, function(value)
+        valueforspeed = value
+    end)
+
+    
+    local heartbeat2
+    section1:addToggle("Auto Click", nil, function(value)
+       if value == true then        
+    heartbeat2 = game:GetService("RunService").Heartbeat:Connect(function()
+            click()
+    end)
+        else
+            heartbeat2:Disconnect()
+    end
+    end)
+
+        
+    local heartbeat3
+    section1:addToggle("Auto Rebirth", nil, function(value)
+       if value == true then        
+    heartbeat3 = game:GetService("RunService").Heartbeat:Connect(function()
+            rebirth()
+    end)
+        else
+            heartbeat3:Disconnect()
+    end
+    end)
+
+       
+    local heartbeat4
+    section1:addToggle("Auto Hatch Toggle", nil, function(value)
+       if value == true then       
+        venyx:Notify("Please stand next to egg", "Please stand next to egg you want to hatch") 
+        heartbeat4 = game:GetService("RunService").Heartbeat:Connect(function()
+            wait(0.8)
+            hatchegg()
+    end)
+        else
+            heartbeat4:Disconnect()
+    end
+    end)
+
+    section1:addDropdown("Auto Hatch Egg", {"Beach", "Robux", "Volcano", "IceCream", "Toy", "Desert", "WRobux", "GemCavern", "Atlantis", "Dojo"}, function(text)
+        valueforautohatch = text
+    end)
+
+         
+    local heartbeat5a
+    section1:addToggle("Auto Farm", nil, function(value)
+        if value == true then    
+            if  game:GetService("Workspace"):FindFirstChild("BlockPart") then
+            game:GetService("Workspace"):FindFirstChild("BlockPart"):Destroy() 
+            end  
+        venyx:Notify("If it does not disable rejoin!", "If it does not disable rejoin!")
+        heartbeat5a = game:GetService("RunService").Heartbeat:Connect(function()
+            wait(3)
+            game:GetService("TweenService"):Create(game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart"), TweenInfo.new(0.1, Enum.EasingStyle.Linear), {CFrame =  CFrame.new(616299.75, 11.7546759, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1)}):Play()
+
+        end)
+    else
+        heartbeat5a:Disconnect()
+        end
+    end)
+
+local tpservice = game:GetService("TeleportService")
+    section1:addButton("Rejoin", function()
+        tpservice:Teleport(game.PlaceId)
+    end)
+    
+    venyx:SelectPage(venyx.pages[1], true)
